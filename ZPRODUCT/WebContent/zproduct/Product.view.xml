@@ -39,7 +39,7 @@
 				<Label text="Description" />
 				<Input value="{Description}"/>
 				<Label text="Supplier ID" />
-				<Input value="{SupplierID}"/>	
+				<Input value="{SupplierID}" />	
 				
 			</f:content>
 		</f:SimpleForm>
@@ -49,6 +49,8 @@
 		   <Bar>
 		      <contentRight>
 		          <Button text="Create" press="onCreate"/>
+		          <Button text="Update" press="onUpdate"></Button>
+		          <Button text="Delete" press="onDelete"/>
 		      </contentRight>
 		   </Bar>
 		</footer>

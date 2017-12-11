@@ -14,9 +14,10 @@ sap.ui.controller("zproduct.Product", {
 	
 	onItemSelection : function(oEvent){
 			
-		var prodID = oEvent.getSource().getTitle();		
+		this.prodID = oEvent.getSource().getTitle();
+		
 		this.getView().byId("idVBox").setVisible(true);			
-		this.getView().byId("SimpleFormChange354").bindElement("/ProductSet('"+prodID+"')");
+		this.getView().byId("SimpleFormChange354").bindElement("/ProductSet('"+this.prodID+"')");
 		
 	
 	},
@@ -40,7 +41,8 @@ sap.ui.controller("zproduct.Product", {
         		  press : function(){ oDialog.close()}}),
         	  beginButton : new sap.m.Button({ text : "Save & Close",
         		press : function(oEvent){
-                  debugger;  
+                  debugger; 
+                  this
                // collect the data
                   var data = {
 	                		  ProductID : oEvent.getSource().getParent().getContent()[1].getValue(),
@@ -69,6 +71,70 @@ sap.ui.controller("zproduct.Product", {
           });
           
           oDialog.open();
+	},
+	onUpdate : function(){
+		
+		
+		var oDialog = new sap.m.Dialog({
+			title : "Update Product",
+			content : [
+				new sap.m.Label({ text : "Product ID"}),
+				new sap.m.Input({ value : this.prodID}),
+				new sap.m.Label({ text : "Name"}),
+				new sap.m.Input()				
+			],
+			endButton : new sap.m.Button({
+				text : "Update and Close",
+				press : function(oEvent){
+					//start of the press function
+					
+					var data = {
+							//ProductID : oEvent.getSource().getParent().getContent()[1].getValue(),
+							Name : oEvent.getSource().getParent().getContent()[3].getValue()
+					}
+					
+					this.getView().getModel().update("/ProductSet('"+oEvent.getSource().getParent().getContent()[1].getValue()+"')", data, {
+						success : function(){
+							sap.m.MessageToast.show("Data Updated");
+						},
+						error : function(){
+							sap.m.MessageToast.show("Data Not Updated");
+						}
+					});
+					oEvent.getSource().getParent().close();
+					//end of the press function
+				}.bind(this)
+			})
+		}); //end of dialog
+		oDialog.open();
+		
+	},
+	onDelete: function(){
+		
+		this.getView().getModel().remove("/ProductSet('"+this.prodID+"')", {
+			success : function(){
+				sap.m.MessageToast.show("data deleted")
+			},
+			error : function(){
+				sap.m.MessageToast.show("data not deleted");
+			}
+		})
 	}
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
